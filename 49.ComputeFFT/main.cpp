@@ -473,14 +473,12 @@ int main()
 		// Ker Image FFT X
 		driver->bindComputePipeline(fftPipeline_ImageInput.get());
 		driver->bindDescriptorSets(EPBP_COMPUTE, fftPipeline_ImageInput->getLayout(), 0u, 1u, &fftDescriptorSet_Ker_FFT_X.get(), nullptr);
-		FFTClass::pushConstants(driver, fftPipeline_ImageInput->getLayout(), kerDim, paddedKerDim, FFTClass::Direction::X, false, srcNumChannels, FFTClass::PaddingType::FILL_WITH_ZERO);
-		FFTClass::dispatchHelper(driver, fftDispatchInfo_Horizontal);
+		FFTClass::dispatchHelper(driver,lastFFTPipeline->getLayout(),fftDispatchInfo_Horizontal);
 
 		// Ker Image FFT Y
 		driver->bindComputePipeline(fftPipeline_SSBOInput.get());
 		driver->bindDescriptorSets(EPBP_COMPUTE, fftPipeline_SSBOInput->getLayout(), 0u, 1u, &fftDescriptorSet_Ker_FFT_Y.get(), nullptr);
-		FFTClass::pushConstants(driver, fftPipeline_SSBOInput->getLayout(), paddedKerDim, paddedKerDim, FFTClass::Direction::Y, false, srcNumChannels);
-		FFTClass::dispatchHelper(driver, fftDispatchInfo_Vertical);
+		FFTClass::dispatchHelper(driver,lastFFTPipeline->getLayout(),fftDispatchInfo_Vertical);
 		
 		// Ker Normalization
 		auto fftPipeline_KernelNormalization = driver->createGPUComputePipeline(nullptr, core::smart_refctd_ptr(fftPipelineLayout_KernelNormalization),
@@ -533,20 +531,17 @@ int main()
 		// Src Image FFT X
 		driver->bindComputePipeline(fftPipeline_ImageInput.get());
 		driver->bindDescriptorSets(EPBP_COMPUTE, fftPipeline_ImageInput->getLayout(), 0u, 1u, &fftDescriptorSet_Src_FFT_X.get(), nullptr);
-		FFTClass::pushConstants(driver, fftPipeline_ImageInput->getLayout(), srcDim, paddedDim, FFTClass::Direction::X, false, srcNumChannels, FFTClass::PaddingType::CLAMP_TO_EDGE);
-		FFTClass::dispatchHelper(driver, fftDispatchInfo_Horizontal);
+		FFTClass::dispatchHelper(driver,lastFFTPipeline->getLayout(),fftDispatchInfo_Horizontal);
 
 		// Src Image FFT Y + Convolution + Convolved IFFT Y
 		driver->bindComputePipeline(convolvePipeline.get());
 		driver->bindDescriptorSets(EPBP_COMPUTE, convolvePipeline->getLayout(), 0u, 1u, &convolveDescriptorSet.get(), nullptr);
-		FFTClass::pushConstants(driver, convolvePipeline->getLayout(), paddedDim, paddedDim, FFTClass::Direction::Y, false, srcNumChannels);
-		FFTClass::dispatchHelper(driver, fftDispatchInfo_Vertical);
+		FFTClass::dispatchHelper(driver,lastFFTPipeline->getLayout(),fftDispatchInfo_Vertical);
 
 		// Last FFT Padding and Copy to GPU Image
 		driver->bindComputePipeline(lastFFTPipeline.get());
 		driver->bindDescriptorSets(EPBP_COMPUTE, lastFFTPipeline->getLayout(), 0u, 1u, &lastFFTDescriptorSet.get(), nullptr);
-		FFTClass::pushConstants(driver, lastFFTPipeline->getLayout(), paddedDim, paddedDim, FFTClass::Direction::X, true, srcNumChannels);
-		FFTClass::dispatchHelper(driver, fftDispatchInfo_Horizontal);
+		FFTClass::dispatchHelper(driver,lastFFTPipeline->getLayout(),fftDispatchInfo_Horizontal);
 		
 		if(false == savedToFile) {
 			savedToFile = true;
