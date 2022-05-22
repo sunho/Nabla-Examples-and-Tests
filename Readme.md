@@ -16,6 +16,16 @@ Whenever CMake generates separate makefiles/solutions/projects, they will be gen
 
 ## Maintenance Matrix
 
+This is my [random value] located somewhere in my Markdown document.
+
+[random value]: variable value
+
+
+
+test [random value] 
+
+
+
 In the future we expect this matrix to be kept up to date, live by our CI.
 
 _Examples numbered 00 are provisional and are not part of the example suite._
@@ -30,8 +40,8 @@ S = Intended to be Supported (requires some work to port after an API change)
 
 N = No support
 
-|                                 | Win32 OpenGL | Win32 OpenGL ES* | Win32 Vulkan | X11** OpenGL | X11** OpenGL ES | X11** Vulkan | Android OpenGL ES | Android Vulkan | Required CMake Options****                        |
-|---------------------------------|--------------|------------------|--------------|--------------|-----------------|--------------|-------------------|----------------|---------------------------------------------------|
+| Example                         | Win32 OpenGL | Win32 OpenGL ES* | Win32 Vulkan | X11** OpenGL | X11** OpenGL ES | X11** Vulkan | Android OpenGL ES | Android Vulkan | Required CMake Options****                        |
+| ------------------------------- | ------------ | ---------------- | ------------ | ------------ | --------------- | ------------ | ----------------- | -------------- | ------------------------------------------------- |
 | 01.HelloWorld                   | Y            | Y                | Y            | S            | S               | S            | Y                 | S              |                                                   |
 | 02.ComputeShader                | Y            | Y                | Y            | B            | B               | S            | B                 | S              |                                                   |
 | 03.GPU_Mesh                     | W            | W                | W            | W            | W               | W            | W                 | W              |                                                   |
