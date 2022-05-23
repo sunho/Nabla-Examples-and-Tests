@@ -166,7 +166,7 @@ _Examples numbered 00 are provisional and are not part of the example suite._
 
 
 
-=======================
+
 
 
 
@@ -233,7 +233,7 @@ _Examples numbered 00 are provisional and are not part of the example suite._
 
 
 
-==================
+
 
 
 
@@ -302,8 +302,6 @@ _Examples numbered 00 are provisional and are not part of the example suite._
 
 
 
-666969696969696969696699696969696969696
-
 
 
 [01_Android_Release]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DRelease%2CDEVSH_EXAMPLES%3Dhelloworld%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
@@ -369,7 +367,7 @@ _Examples numbered 00 are provisional and are not part of the example suite._
 
 
 
-=======================
+
 
 
 
@@ -436,70 +434,74 @@ _Examples numbered 00 are provisional and are not part of the example suite._
 
 
 
-==================
 
 
 
-[01_Android_Debug]: t
-[02_Android_Debug]: t
-[03_Android_Debug]: t
-[04_Android_Debug]: t
-[05_Android_Debug]: t
-[06_Android_Debug]: t
-[07_Android_Debug]: t
+
+[01_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dhelloworld%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[02_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dcomputeshader%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[03_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dgpu_mesh%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[04_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dkeyframe%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[05_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dnablatutorialexample%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[06_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dmeshloaders%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[07_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dsubpassbaking%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [08_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[09_Android_Debug]: t
-[10_Android_Debug]: t
-[11_Android_Debug]: t
-[12_Android_Debug]: t
+[09_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dcolorspacetest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[10_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dallocatortest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[11_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dlodsystem%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[12_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dgltf%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [13_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[14_Android_Debug]: t
+[14_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dcomputescan%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [15_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[16_Android_Debug]: t
-[17_Android_Debug]: t
-[18_Android_Debug]: t
+[16_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dorderindependenttransparency%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[17_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dsimplebulletintegration%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[18_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dmitsubaloader%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [19_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[20_Android_Debug]: t
-[21_Android_Debug]: t
-[22_Android_Debug]: t
-[23_Android_Debug]: t
+[20_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dmegatexture%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[21_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Ddynamictextureindexing%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[22_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Draytracedao%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[23_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dautoexposure%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [24_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[25_Android_Debug]: t
+[25_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dblur%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [26_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[27_Android_Debug]: t
+[27_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dplystldemo%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [28_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[29_Android_Debug]: t
+[29_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dspecializationconstants%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [30_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
 [31_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
 [32_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[33_Android_Debug]: t
-[34_Android_Debug]: t
-[35_Android_Debug]: t
-[36_Android_Debug]: t
+[33_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Ddraw3dline%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[34_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dlrucacheunittest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[35_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dgeometrycreator%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[36_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dcudainterop%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [37_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[38_Android_Debug]: t
-[39_Android_Debug]: t
-[40_Android_Debug]: t
-[41_Android_Debug]: t
-[42_Android_Debug]: t
-[43_Android_Debug]: t
-[44_Android_Debug]: t
-[45_Android_Debug]: t
-[46_Android_Debug]: t
-[47_Android_Debug]: t
-[48_Android_Debug]: t
-[49_Android_Debug]: t
-[50_Android_Debug]: t
-[51_Android_Debug]: t
-[52_Android_Debug]: t
-[53_Android_Debug]: t
-[54_Android_Debug]: t
-[55_Android_Debug]: t
-[56_Android_Debug]: t
-[57_Android_Debug]: t
-[58_Android_Debug]: t
+[38_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dexrsplit%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[39_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Ddenoisertonemapper%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[40_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dglitest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[41_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dvisibilitybuffer%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[42_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dfragmentshaderpathtracer%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[43_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dsumandcdffilters%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[44_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dlevelcurveextraction%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[45_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dbrdfevaltest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[46_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dsamplingvalidation%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[47_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dderivmaptest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[48_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Darithmeticunittest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[49_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dcomputefft%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[50_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dnewapitest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[51_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dradixsort%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[52_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dsystemtest%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[53_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dcomputeshaders%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[54_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dtransformations%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[55_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Drgb18e7s3%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[56_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Drayquery%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[57_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dandroidsample%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+[58_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dmediaunpackingonandroid%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
 [59_Android_Debug]: https://img.shields.io/badge/free%20slot-n%2Fa-red
-[60_Android_Debug]: t
+[60_Android_Debug]: https://ci.devsh.eu/buildStatus/icon?job=BuildExamples%2FDEVSH_CONFIGURATIONS%3DDebug%2CDEVSH_EXAMPLES%3Dclusteredrendering%2CDEVSH_NODES%3Dnode1%2CDEVSH_OS%3DAndroid
+
+
+
+
 
 
 
