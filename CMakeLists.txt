@@ -72,4 +72,5 @@ if (NOT NBL_BUILD_ANDROID)
 endif()
 add_subdirectory(60.ClusteredRendering EXCLUDE_FROM_ALL)
 add_subdirectory(61.BlitFilterTest EXCLUDE_FROM_ALL)
+add_subdirectory(62.TextRendering EXCLUDE_FROM_ALL)
 add_subdirectory(0.ImportanceSamplingEnvMaps EXCLUDE_FROM_ALL) #TODO: integrate back into 42
