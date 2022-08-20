@@ -426,7 +426,10 @@ public:
 		error = FT_New_Face(library, "C:\\Windows\\Fonts\\arialbd.ttf", 0, &face);
 		assert(!error);
 
-		error = FT_Load_Glyph(face, 'f', FT_LOAD_NO_SCALE);
+		wchar_t unicode = 'q';
+		uint32_t glyphIndex = FT_Get_Char_Index(face, unicode);
+		printf("Unicode: %i glyph index: %i", unicode, glyphIndex);
+		error = FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_SCALE);
 		assert(!error);
 
 		msdfgen::Shape shape;
