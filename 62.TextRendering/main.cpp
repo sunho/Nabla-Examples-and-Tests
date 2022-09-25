@@ -418,7 +418,7 @@ public:
 			m_renderFinished[i] = logicalDevice->createSemaphore();
 		}
 
-		nbl::ext::TextRendering::FontAtlas atlas(queues[CommonAPI::InitOutput::EQT_COMPUTE], logicalDevice.get(), "C:\\Windows\\Fonts\\arialbd.ttf", 32, 32, 20);
+		nbl::ext::TextRendering::FontAtlas atlas(queues[CommonAPI::InitOutput::EQT_COMPUTE], logicalDevice.get(), "C:\\Windows\\Fonts\\arialbd.ttf", 512, 512, 2, 1);
 	}
 
 	void onAppTerminated_impl() override
