@@ -14,18 +14,20 @@ PSInput main(uint vertexID : SV_VertexID)
 {
     const uint vertexIdx = vertexID & 0x3u;
     const uint objectID = vertexID >> 2;
-    
+
     DrawObject drawObj = drawObjects[objectID];
     ObjectType objType = drawObj.type;
     
     PSInput outV;
-    outV.lineWidth_eccentricity_objType.x = asuint(globals.lineWidth);
-    outV.lineWidth_eccentricity_objType.z = (uint)objType;
+    outV.lineWidth_eccentricity_objType_writeToAlpha.x = asuint(globals.lineWidth);
+    outV.lineWidth_eccentricity_objType_writeToAlpha.z = (uint)objType;
 
     // TODO: get from styles
     outV.color = globals.color;
 
     const float antiAliasedLineWidth = globals.lineWidth + globals.antiAliasingFactor * 2.0f;
+
+    outV.lineWidth_eccentricity_objType_writeToAlpha.w = (vertexIdx % 2u == 0u) ? 1u : 0u;
 
     if (objType == ObjectType::ELLIPSE)
     {
@@ -41,7 +43,7 @@ PSInput main(uint vertexID : SV_VertexID)
 #endif 
         uint4 angleBoundsPacked_eccentricityPacked_pad = vk::RawBufferLoad<uint4>(drawObj.address + 32u, 8u);
 
-        outV.lineWidth_eccentricity_objType.y = angleBoundsPacked_eccentricityPacked_pad.z; // asfloat because it is acrually packed into a uint and we should not treat it as a float yet.
+        outV.lineWidth_eccentricity_objType_writeToAlpha.y = angleBoundsPacked_eccentricityPacked_pad.z; // asfloat because it is acrually packed into a uint and we should not treat it as a float yet.
 
         double3x3 transformation = (double3x3)globals.viewProjection;
 
@@ -143,9 +145,11 @@ PSInput main(uint vertexID : SV_VertexID)
     }
     else if (objType == ObjectType::ROAD)
     {
-        // Get the 4 generated points 
-        // Transform to ndc
-        // pass to fragment
+        outV.color = float4(0.7, 0.1, 0.5, 0.5);
+        double3x3 transformation = (double3x3)globals.viewProjection;
+        double2 vertex = vk::RawBufferLoad<double2>(drawObj.address + sizeof(double2) * vertexIdx, 8u);
+        outV.position.xy = mul(transformation, double3(vertex, 1)).xy; // Transform to NDC
+        outV.position.w = 1u;
     }
 	return outV;
 }
