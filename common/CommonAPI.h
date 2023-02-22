@@ -9,7 +9,6 @@
 
 #include "nbl/ui/CGraphicalApplicationAndroid.h"
 #include "nbl/ui/CWindowManagerAndroid.h"
-#include "nbl/ui/IGraphicalApplicationFramework.h"
 
 // TODO: see TODO below
 #if defined(_NBL_PLATFORM_WINDOWS_)
@@ -1370,13 +1369,13 @@ class GPUApplication : public nbl::system::IApplicationFramework
 		using Base::Base;
 
 	protected:
-		smart_refctd_ptr<IAPIConnection> m_apiConnection;
-		smart_refctd_ptr<ILogicalDevice> m_logicalDevice;
-		smart_refctd_ptr<IUtilities> m_utilities;
+		nbl::core::smart_refctd_ptr<nbl::video::IAPIConnection> m_apiConnection;
+		nbl::core::smart_refctd_ptr<nbl::video::ILogicalDevice> m_logicalDevice;
+		nbl::core::smart_refctd_ptr<nbl::video::IUtilities> m_utilities;
 };
 
 #ifndef _NBL_PLATFORM_ANDROID_
-class GraphicalApplication : /*TODO: murder this callback inheritance, doesn't make sense*/public CommonAPI::CommonAPIEventCallback, public GPUApplication, public nbl::ui::IGraphicalApplicationFramework
+class GraphicalApplication : /*TODO: murder this callback inheritance, doesn't make sense*/public CommonAPI::CommonAPIEventCallback, public GPUApplication
 {
 	public:
 		inline GraphicalApplication(
@@ -1396,7 +1395,7 @@ class GraphicalApplication : /*TODO: murder this callback inheritance, doesn't m
 			nbl::video::ISwapchain::SCreationParams& swapchainCreationParams, 
 			nbl::core::smart_refctd_ptr<nbl::video::ISwapchain>& swapchainRef)
 		{
-			auto logicalDevice = getLogicalDevice();
+			auto logicalDevice = m_logicalDevice;
 			std::unique_lock guard(m_swapchainPtrMutex);
 			CommonAPI::createSwapchain(
 				nbl::core::smart_refctd_ptr<nbl::video::ILogicalDevice>(logicalDevice),
@@ -1411,7 +1410,7 @@ class GraphicalApplication : /*TODO: murder this callback inheritance, doesn't m
 
 		void waitForFrame(uint32_t framesInFlight,nbl::core::smart_refctd_ptr<nbl::video::IGPUFence>& fence)
 		{
-			auto logicalDevice = getLogicalDevice();
+			auto logicalDevice = m_logicalDevice;
 			if (fence)
 			{
 				logicalDevice->blockForFences(1u, &fence.get());
@@ -1506,7 +1505,7 @@ class GraphicalApplication : /*TODO: murder this callback inheritance, doesn't m
 
 			if (!image || image->getCreationParameters().extent.width < w || image->getCreationParameters().extent.height < h)
 			{
-				auto logicalDevice = getLogicalDevice();
+				auto logicalDevice = m_logicalDevice;
 				nbl::video::IGPUImage::SCreationParams creationParams;
 				creationParams.type = nbl::asset::IImage::ET_2D;
 				creationParams.samples = nbl::asset::IImage::ESCF_1_BIT;

@@ -123,37 +123,8 @@ class BRDFEvalTestApp : public ApplicationBase
             }
         }
 
-        void setWindow(core::smart_refctd_ptr<IWindow> &&wnd) override {
-            window = std::move(wnd);
-        }
         void setSystem(core::smart_refctd_ptr<ISystem> &&s) override {
             system = std::move(s);
-        }
-        IWindow *getWindow() override { return window.get(); }
-        video::IAPIConnection *getAPIConnection() override {
-        return apiConnection.get();
-        }
-        video::ILogicalDevice *getLogicalDevice() override {
-        return logicalDevice.get();
-        }
-        video::IGPURenderpass *getRenderpass() override { return renderpass.get(); }
-        void setSurface(core::smart_refctd_ptr<video::ISurface> &&s) override {
-        surface = std::move(s);
-        }
-        void setFBOs(
-            std::vector<core::smart_refctd_ptr<video::IGPUFramebuffer>> &f) override {
-        for (int i = 0; i < f.size(); i++) {
-            fbo->begin()[i] = core::smart_refctd_ptr(f[i]);
-        }
-        }
-        void setSwapchain(core::smart_refctd_ptr<video::ISwapchain> &&s) override {
-        swapchain = std::move(s);
-        }
-        uint32_t getSwapchainImageCount() override {
-        return swapchain->getImageCount();
-        }
-        virtual E_FORMAT getDepthFormat() override {
-        return EF_D32_SFLOAT;
         }
 
         APP_CONSTRUCTOR(BRDFEvalTestApp)

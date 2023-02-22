@@ -339,10 +339,9 @@ void GraphicalApplication::immediateImagePresent(nbl::video::IGPUQueue* queue, n
 
 	uint32_t bufferIx = frameIx % 2;
 	auto image = m_tripleBufferRenderTargets.begin()[bufferIx];
-	auto logicalDevice = getLogicalDevice();
 
-	auto imageAcqToSubmit = logicalDevice->createSemaphore();
-	auto submitToPresent = logicalDevice->createSemaphore();
+	auto imageAcqToSubmit = m_logicalDevice->createSemaphore();
+	auto submitToPresent = m_logicalDevice->createSemaphore();
 
 	// acquires image, allocates one shot fences, commandpool and commandbuffer to do a blit, submits and presents
 	uint32_t imgnum = 0;
@@ -350,10 +349,10 @@ void GraphicalApplication::immediateImagePresent(nbl::video::IGPUQueue* queue, n
 	assert(acquireResult);
 
 	auto& swapchainImage = swapchainImages[imgnum]; // tryAcquireImage will have this image be recreated
-	auto fence = logicalDevice->createFence(static_cast<nbl::video::IGPUFence::E_CREATE_FLAGS>(0));;
-	auto commandPool = logicalDevice->createCommandPool(queue->getFamilyIndex(), nbl::video::IGPUCommandPool::ECF_NONE);
+	auto fence = m_logicalDevice->createFence(static_cast<nbl::video::IGPUFence::E_CREATE_FLAGS>(0));;
+	auto commandPool = m_logicalDevice->createCommandPool(queue->getFamilyIndex(), nbl::video::IGPUCommandPool::ECF_NONE);
 	nbl::core::smart_refctd_ptr<nbl::video::IGPUCommandBuffer> commandBuffer;
-	logicalDevice->createCommandBuffers(commandPool.get(), nbl::video::IGPUCommandBuffer::EL_PRIMARY, 1u, &commandBuffer);
+	m_logicalDevice->createCommandBuffers(commandPool.get(), nbl::video::IGPUCommandBuffer::EL_PRIMARY, 1u, &commandBuffer);
 
 	commandBuffer->begin(nbl::video::IGPUCommandBuffer::EU_ONE_TIME_SUBMIT_BIT);
 
@@ -432,18 +431,18 @@ void GraphicalApplication::immediateImagePresent(nbl::video::IGPUQueue* queue, n
 	commandBuffer->end();
 
 	CommonAPI::Submit(
-		logicalDevice, commandBuffer.get(), queue,
+		m_logicalDevice.get(), commandBuffer.get(), queue,
 		imageAcqToSubmit.get(),
 		submitToPresent.get(),
 		fence.get());
 	CommonAPI::Present(
-		logicalDevice,
+		m_logicalDevice.get(),
 		swapchain,
 		queue,
 		submitToPresent.get(),
 		imgnum);
 
-	logicalDevice->blockForFences(1u, &fence.get());
+	m_logicalDevice->blockForFences(1u, &fence.get());
 }
 
 
