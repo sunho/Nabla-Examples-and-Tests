@@ -614,7 +614,7 @@ public:
 		nbl::asset::E_FORMAT baseDepthFormat = nbl::asset::EF_UNKNOWN
 	);
 
-	static constexpr nbl::asset::E_PIPELINE_STAGE_FLAGS DefaultSubmitWaitStage = nbl::asset::EPSF_COLOR_ATTACHMENT_OUTPUT_BIT;
+	static constexpr nbl::asset::PIPELINE_STAGE_FLAGS DefaultSubmitWaitStage = nbl::asset::PIPELINE_STAGE_FLAGS::COLOR_ATTACHMENT_OUTPUT_BIT;
 	static void Submit(
 		nbl::video::ILogicalDevice* device,
 		nbl::video::IGPUCommandBuffer* cmdbuf,
@@ -622,7 +622,7 @@ public:
 		nbl::video::IGPUSemaphore* const waitSemaphore, // usually the image acquire semaphore
 		nbl::video::IGPUSemaphore* const renderFinishedSemaphore,
 		nbl::video::IGPUFence* fence=nullptr,
-		const nbl::core::bitflag<nbl::asset::E_PIPELINE_STAGE_FLAGS> waitDstStageMask=DefaultSubmitWaitStage // only matters if `waitSemaphore` not null
+		const nbl::core::bitflag<nbl::asset::PIPELINE_STAGE_FLAGS> waitDstStageMask=DefaultSubmitWaitStage // only matters if `waitSemaphore` not null
 	)
 	{
 		using namespace nbl;
@@ -634,10 +634,9 @@ public:
 			submit.signalSemaphoreCount = waitSemaphore ? 1u:0u;
 			submit.pSignalSemaphores = &signalsem;
 			nbl::video::IGPUSemaphore* waitsem = waitSemaphore;
-			asset::E_PIPELINE_STAGE_FLAGS dstWait = waitDstStageMask.value;
 			submit.waitSemaphoreCount = 1u;
 			submit.pWaitSemaphores = &waitsem;
-			submit.pWaitDstStageMask = &dstWait;
+			submit.pWaitDstStageMask = &waitDstStageMask.value;
 
 			queue->submit(1u,&submit,fence);
 		}
@@ -689,7 +688,7 @@ public:
 		return std::pair(image, image_view);
 	}
 
-	static int getQueueFamilyIndex(const nbl::video::IPhysicalDevice* gpu, nbl::core::bitflag<nbl::video::IPhysicalDevice::E_QUEUE_FLAGS> requiredQueueFlags)
+	static int getQueueFamilyIndex(const nbl::video::IPhysicalDevice* gpu, nbl::core::bitflag<nbl::video::IGPUQueue::FAMILY_FLAGS> requiredQueueFlags)
 	{
 		auto props = gpu->getQueueFamilyProperties();
 		int currentIndex = 0;
@@ -776,12 +775,12 @@ protected:
 					if (currentFamilyQueueCount <= 0)
 						continue;
 
-					bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
-					bool hasGraphicsFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_GRAPHICS_BIT).value != 0;
-					bool hasComputeFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_COMPUTE_BIT).value != 0;
-					bool hasTransferFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_TRANSFER_BIT).value != 0;
-					bool hasSparseBindingFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_SPARSE_BINDING_BIT).value != 0;
-					bool hasProtectedFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_PROTECTED_BIT).value != 0;
+					const bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
+					const bool hasGraphicsFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::GRAPHICS_BIT);
+					const bool hasComputeFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::COMPUTE_BIT);
+					const bool hasTransferFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::TRANSFER_BIT);
+					const bool hasSparseBindingFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::SPARSE_BINDING_BIT);
+					const bool hasProtectedFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::PROTECTED_BIT);
 
 					const uint32_t remainingQueueCount = remainingQueueCounts[familyIndex];
 					const bool hasEnoughQueues = remainingQueueCount >= 1u;
@@ -839,12 +838,12 @@ protected:
 				if (currentFamilyQueueCount <= 0)
 					continue;
 
-				bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
-				bool hasGraphicsFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_GRAPHICS_BIT).value != 0;
-				bool hasComputeFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_COMPUTE_BIT).value != 0;
-				bool hasTransferFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_TRANSFER_BIT).value != 0;
-				bool hasSparseBindingFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_SPARSE_BINDING_BIT).value != 0;
-				bool hasProtectedFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_PROTECTED_BIT).value != 0;
+				const bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
+				const bool hasGraphicsFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::GRAPHICS_BIT);
+				const bool hasComputeFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::COMPUTE_BIT);
+				const bool hasTransferFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::TRANSFER_BIT);
+				const bool hasSparseBindingFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::SPARSE_BINDING_BIT);
+				const bool hasProtectedFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::PROTECTED_BIT);
 
 				const uint32_t remainingQueueCount = remainingQueueCounts[familyIndex];
 				const bool hasExtraQueues = remainingQueueCount >= 1u;
@@ -898,12 +897,12 @@ protected:
 				if (currentFamilyQueueCount <= 0)
 					continue;
 
-				bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
-				bool hasGraphicsFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_GRAPHICS_BIT).value != 0;
-				bool hasComputeFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_COMPUTE_BIT).value != 0;
-				bool hasTransferFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_TRANSFER_BIT).value != 0;
-				bool hasSparseBindingFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_SPARSE_BINDING_BIT).value != 0;
-				bool hasProtectedFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_PROTECTED_BIT).value != 0;
+				const bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
+				const bool hasGraphicsFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::GRAPHICS_BIT);
+				const bool hasComputeFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::COMPUTE_BIT);
+				const bool hasTransferFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::TRANSFER_BIT);
+				const bool hasSparseBindingFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::SPARSE_BINDING_BIT);
+				const bool hasProtectedFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::PROTECTED_BIT);
 
 				const uint32_t extraQueueCount = nbl::core::min(remainingQueueCounts[familyIndex], 2u); // UP + DOWN
 				const bool hasExtraQueues = extraQueueCount >= 1u;
@@ -973,12 +972,12 @@ protected:
 						if (currentFamilyQueueCount <= 0)
 							continue;
 
-						bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
-						bool hasGraphicsFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_GRAPHICS_BIT).value != 0;
-						bool hasComputeFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_COMPUTE_BIT).value != 0;
-						bool hasTransferFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_TRANSFER_BIT).value != 0;
-						bool hasSparseBindingFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_SPARSE_BINDING_BIT).value != 0;
-						bool hasProtectedFlag = (familyProperty.queueFlags & IPhysicalDevice::EQF_PROTECTED_BIT).value != 0;
+						const bool supportsPresent = surface && surface->isSupportedForPhysicalDevice(physicalDevice, familyIndex);
+						const bool hasGraphicsFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::GRAPHICS_BIT);
+						const bool hasComputeFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::COMPUTE_BIT);
+						const bool hasTransferFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::TRANSFER_BIT);
+						const bool hasSparseBindingFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::SPARSE_BINDING_BIT);
+						const bool hasProtectedFlag = familyProperty.queueFlags.hasFlags(IGPUQueue::FAMILY_FLAGS::PROTECTED_BIT);
 
 						const uint32_t remainingQueueCount = remainingQueueCounts[familyIndex];
 						const bool hasEnoughExtraQueues = remainingQueueCount >= 1u;

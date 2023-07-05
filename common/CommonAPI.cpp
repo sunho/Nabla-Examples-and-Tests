@@ -1,5 +1,8 @@
-
 #include "CommonAPI.h"
+
+using namespace nbl;
+using namespace nbl::asset;
+using namespace nbl::video;
 
 nbl::video::IPhysicalDevice* CommonAPI::CDefaultPhysicalDeviceSelector::selectPhysicalDevice(const nbl::core::set<nbl::video::IPhysicalDevice*>& suitablePhysicalDevices)
 {
@@ -30,8 +33,6 @@ nbl::video::ISwapchain::SCreationParams CommonAPI::computeSwapchainCreationParam
 	const nbl::video::ISurface::E_SURFACE_TRANSFORM_FLAGS* acceptableSurfaceTransforms, uint32_t acceptableSurfaceTransformCount
 )
 {
-	using namespace nbl;
-
 	nbl::video::ISurface::SFormat surfaceFormat;
 	nbl::video::ISurface::E_PRESENT_MODE presentMode = nbl::video::ISurface::EPM_UNKNOWN;
 	nbl::video::ISurface::E_SURFACE_TRANSFORM_FLAGS surfaceTransform = nbl::video::ISurface::EST_FLAG_BITS_MAX_ENUM;
@@ -151,15 +152,13 @@ void CommonAPI::retireSwapchainResources(nbl::core::deque<IRetiredSwapchainResou
 
 nbl::core::smart_refctd_ptr<nbl::video::IGPURenderpass> CommonAPI::createRenderpass(const nbl::core::smart_refctd_ptr<nbl::video::ILogicalDevice>& device, nbl::asset::E_FORMAT colorAttachmentFormat, nbl::asset::E_FORMAT baseDepthFormat)
 {
-	using namespace nbl;
-
 	bool useDepth = baseDepthFormat != nbl::asset::EF_UNKNOWN;
 	nbl::asset::E_FORMAT depthFormat = nbl::asset::EF_UNKNOWN;
 	if (useDepth)
 	{
 		depthFormat = device->getPhysicalDevice()->promoteImageFormat(
-			{ baseDepthFormat, nbl::video::IPhysicalDevice::SFormatImageUsages::SUsage(nbl::asset::IImage::EUF_DEPTH_STENCIL_ATTACHMENT_BIT) },
-			nbl::video::IGPUImage::ET_OPTIMAL
+			{ baseDepthFormat, nbl::video::IPhysicalDevice::SFormatImageUsages::SUsage(nbl::asset::IImage::EUF_RENDER_ATTACHMENT_BIT) },
+			nbl::video::IGPUImage::TILING::OPTIMAL
 		);
 		assert(depthFormat != nbl::asset::EF_UNKNOWN);
 	}
@@ -221,17 +220,16 @@ nbl::core::smart_refctd_dynamic_array<nbl::core::smart_refctd_ptr<nbl::video::IG
 	nbl::core::smart_refctd_ptr<nbl::video::ISwapchain> swapchain,
 	nbl::core::smart_refctd_ptr<nbl::video::IGPURenderpass> renderpass,
 	nbl::asset::E_FORMAT baseDepthFormat
-) {
-	using namespace nbl;
-
+)
+{
 	bool useDepth = baseDepthFormat != nbl::asset::EF_UNKNOWN;
 	nbl::asset::E_FORMAT depthFormat = nbl::asset::EF_UNKNOWN;
 	if (useDepth)
 	{
 		depthFormat = baseDepthFormat;
 		//depthFormat = device->getPhysicalDevice()->promoteImageFormat(
-		//	{ baseDepthFormat, nbl::video::IPhysicalDevice::SFormatImageUsages::SUsage(nbl::asset::IImage::EUF_DEPTH_STENCIL_ATTACHMENT_BIT) },
-		//	nbl::asset::IImage::ET_OPTIMAL
+		//	{ baseDepthFormat, nbl::video::IPhysicalDevice::SFormatImageUsages::SUsage(nbl::asset::IImage::EUF_RENDER_ATTACHMENT_BIT) },
+		//	nbl::asset::IImage::TILING::OPTIMAL
 		//);
 		// TODO error reporting
 		assert(depthFormat != nbl::asset::EF_UNKNOWN);
@@ -264,7 +262,7 @@ nbl::core::smart_refctd_dynamic_array<nbl::core::smart_refctd_ptr<nbl::video::IG
 			imgParams.type = asset::IImage::ET_2D;
 			imgParams.format = depthFormat;
 			imgParams.extent = { width, height, 1 };
-			imgParams.usage = asset::IImage::E_USAGE_FLAGS::EUF_DEPTH_STENCIL_ATTACHMENT_BIT;
+			imgParams.usage = asset::IImage::E_USAGE_FLAGS::EUF_RENDER_ATTACHMENT_BIT;
 			imgParams.mipLevels = 1u;
 			imgParams.arrayLayers = 1u;
 			imgParams.samples = asset::IImage::ESCF_1_BIT;

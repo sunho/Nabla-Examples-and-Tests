@@ -39,7 +39,7 @@ class ColorSpaceTestSampleApp : public ApplicationBase
 	core::smart_refctd_ptr<video::IUtilities> utilities;
 	core::smart_refctd_ptr<video::ILogicalDevice> logicalDevice;
 	video::IPhysicalDevice* physicalDevice;
-	std::array<video::IGPUQueue*, CommonAPI::InitOutput::MaxQueuesCount> queues;
+	std::array<video::IQueue*, CommonAPI::InitOutput::MaxQueuesCount> queues;
 	core::smart_refctd_ptr<video::ISwapchain> swapchain;
 	core::smart_refctd_ptr<video::IGPURenderpass> renderpass;
 	core::smart_refctd_dynamic_array<core::smart_refctd_ptr<video::IGPUFramebuffer>> fbos;
@@ -73,7 +73,7 @@ public:
 
 	void onAppInitialized_impl() override
 	{
-		const auto swapchainImageUsage = static_cast<asset::IImage::E_USAGE_FLAGS>(asset::IImage::EUF_COLOR_ATTACHMENT_BIT | asset::IImage::EUF_TRANSFER_SRC_BIT);
+		const auto swapchainImageUsage = asset::IImage::EUF_RENDER_ATTACHMENT_BIT|asset::IImage::EUF_TRANSFER_SRC_BIT;
 
 		CommonAPI::InitParams initParams;
 		initParams.window = core::smart_refctd_ptr(window);
@@ -360,7 +360,7 @@ public:
 				video::IPhysicalDevice::SImageFormatPromotionRequest promotionRequest = {};
 				promotionRequest.originalFormat = imageCreateParams.format;
 				promotionRequest.usages = imageCreateParams.usage | asset::IImage::EUF_TRANSFER_DST_BIT;
-				auto newFormat = physicalDevice->promoteImageFormat(promotionRequest, video::IGPUImage::ET_OPTIMAL);
+				auto newFormat = physicalDevice->promoteImageFormat(promotionRequest, video::IGPUImage::TILING::OPTIMAL);
 
 				video::IGPUImage::SCreationParams gpuImageCreateInfo = {};
 				gpuImageCreateInfo.flags = imageCreateParams.flags;
@@ -370,7 +370,7 @@ public:
 				gpuImageCreateInfo.mipLevels = imageCreateParams.mipLevels;
 				gpuImageCreateInfo.arrayLayers = imageCreateParams.arrayLayers;
 				gpuImageCreateInfo.samples = imageCreateParams.samples;
-				gpuImageCreateInfo.tiling = video::IGPUImage::ET_OPTIMAL;
+				gpuImageCreateInfo.tiling = video::IGPUImage::TILING::OPTIMAL;
 				gpuImageCreateInfo.usage = imageCreateParams.usage | asset::IImage::EUF_TRANSFER_DST_BIT;
 				gpuImageCreateInfo.queueFamilyIndexCount = 0u;
 				gpuImageCreateInfo.queueFamilyIndices = nullptr;
@@ -397,24 +397,24 @@ public:
 				auto& transferCommandPools = commandPools[CommonAPI::InitOutput::EQT_TRANSFER_UP];
 				auto transferQueue = queues[CommonAPI::InitOutput::EQT_TRANSFER_UP];
 				core::smart_refctd_ptr<video::IGPUCommandBuffer> transferCmd;
-				logicalDevice->createCommandBuffers(transferCommandPools[0u].get(), video::IGPUCommandBuffer::EL_PRIMARY, 1u, &transferCmd);
+				logicalDevice->createCommandBuffers(transferCommandPools[0u].get(), video::IGPUCommandBuffer::LEVEL::PRIMARY, 1u, &transferCmd);
 				
 				auto transferFence = logicalDevice->createFence(video::IGPUFence::ECF_UNSIGNALED);
 
-				transferCmd->begin(video::IGPUCommandBuffer::EU_ONE_TIME_SUBMIT_BIT);
+				transferCmd->begin(video::IGPUCommandBuffer::USAGE::ONE_TIME_SUBMIT_BIT);
 				
 				video::IGPUCommandBuffer::SImageMemoryBarrier layoutTransition = {};
 				layoutTransition.barrier.srcAccessMask = asset::EAF_NONE;
 				layoutTransition.barrier.dstAccessMask = asset::EAF_TRANSFER_WRITE_BIT;
-				layoutTransition.oldLayout = asset::IImage::EL_UNDEFINED;
-				layoutTransition.newLayout = asset::IImage::EL_TRANSFER_DST_OPTIMAL;
+				layoutTransition.oldLayout = asset::IImage::LAYOUT::UNDEFINED;
+				layoutTransition.newLayout = asset::IImage::LAYOUT::TRANSFER_DST_OPTIMAL;
 				layoutTransition.srcQueueFamilyIndex = ~0u;
 				layoutTransition.dstQueueFamilyIndex = ~0u;
 				layoutTransition.image = gpuImageView->getCreationParameters().image;
 				layoutTransition.subresourceRange = gpuImageView->getCreationParameters().subresourceRange;
-				transferCmd->pipelineBarrier(asset::EPSF_BOTTOM_OF_PIPE_BIT, asset::EPSF_TRANSFER_BIT, asset::EDF_NONE, 0u, nullptr, 0u, nullptr, 1u, &layoutTransition);
+				transferCmd->pipelineBarrier(asset::PIPELINE_STAGE_FLAGS::BOTTOM_OF_PIPE_BIT, asset::PIPELINE_STAGE_FLAGS::TRANSFER_BIT, asset::EDF_NONE, 0u, nullptr, 0u, nullptr, 1u, &layoutTransition);
 				
-				video::IGPUQueue::SSubmitInfo submit = {};
+				video::IQueue::SSubmitInfo submit = {};
 				submit.commandBufferCount = 1u;
 				submit.commandBuffers = &transferCmd.get();
 				submit.waitSemaphoreCount = 0u;
@@ -486,7 +486,7 @@ public:
 			{
 				info.desc = gpuImageView;
 				info.info.image.sampler = nullptr;
-				info.info.image.imageLayout = asset::IImage::EL_SHADER_READ_ONLY_OPTIMAL;
+				info.info.image.imageLayout = asset::IImage::LAYOUT::READ_ONLY_OPTIMAL;
 			}
 
 			video::IGPUDescriptorSet::SWriteDescriptorSet write;
@@ -521,7 +521,7 @@ public:
 			const auto& graphicsCommandPools = commandPools[CommonAPI::InitOutput::EQT_GRAPHICS];
 			for (uint32_t i = 0u; i < FRAMES_IN_FLIGHT; i++)
 			{
-				logicalDevice->createCommandBuffers(graphicsCommandPools[i].get(), video::IGPUCommandBuffer::EL_PRIMARY, 1, commandBuffers+i);
+				logicalDevice->createCommandBuffers(graphicsCommandPools[i].get(), video::IGPUCommandBuffer::LEVEL::PRIMARY, 1, commandBuffers+i);
 				imageAcquire[i] = logicalDevice->createSemaphore();
 				renderFinished[i] = logicalDevice->createSemaphore();
 			}
@@ -555,20 +555,20 @@ public:
 				// acquire image 
 				swapchain->acquireNextImage(MAX_TIMEOUT, imageAcquire[resourceIx].get(), nullptr, &imgnum);
 
-				cb->begin(video::IGPUCommandBuffer::EU_ONE_TIME_SUBMIT_BIT);  // TODO: Reset Frame's CommandPool
+				cb->begin(video::IGPUCommandBuffer::USAGE::ONE_TIME_SUBMIT_BIT);  // TODO: Reset Frame's CommandPool
 
 
 				video::IGPUCommandBuffer::SImageMemoryBarrier layoutTransition = {};
 				layoutTransition.barrier.srcAccessMask = asset::EAF_NONE;
 				layoutTransition.barrier.dstAccessMask = asset::EAF_SHADER_READ_BIT;
 				layoutTransition.oldLayout = asset::IImage::EL_UNDEFINED;
-				layoutTransition.newLayout = asset::IImage::EL_SHADER_READ_ONLY_OPTIMAL;
+				layoutTransition.newLayout = asset::IImage::LAYOUT::READ_ONLY_OPTIMAL;
 				layoutTransition.srcQueueFamilyIndex = ~0u;
 				layoutTransition.dstQueueFamilyIndex = ~0u;
 				layoutTransition.image = gpuImageView->getCreationParameters().image;
 				layoutTransition.subresourceRange = gpuImageView->getCreationParameters().subresourceRange;
 
-				cb->pipelineBarrier(asset::EPSF_BOTTOM_OF_PIPE_BIT, asset::EPSF_COMPUTE_SHADER_BIT, asset::EDF_NONE, 0u, nullptr, 0u, nullptr, 1u, &layoutTransition);
+				cb->pipelineBarrier(asset::PIPELINE_STAGE_FLAGS::BOTTOM_OF_PIPE_BIT, asset::PIPELINE_STAGE_FLAGS::COMPUTE_SHADER_BIT, asset::EDF_NONE, 0u, nullptr, 0u, nullptr, 1u, &layoutTransition);
 
 				asset::SViewport viewport;
 				viewport.minDepth = 1.f;
