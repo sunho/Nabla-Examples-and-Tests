@@ -2,8 +2,6 @@
 #include <nabla.h>
 
 #include "../common/CommonAPI.h"
-#include "nbl/video/EApiType.h"
-#include "nbl/video/IApiConnection.h"
 
 using namespace nbl;
 using namespace core;
@@ -19,6 +17,8 @@ public:
 	}
 
 	NON_GRAPHICAL_APP_CONSTRUCTOR(AssetConverterUnitTestApp)
+	
+
 
 	void onAppInitialized_impl() override
 	{
@@ -39,12 +39,41 @@ public:
 		cpu2gpuParams = std::move(initOutput.cpu2gpuParams);
 		utilities = std::move(initOutput.utilities);
 
-		
+		//test nullptrs in visitor methods
+		{
+			auto asset = core::make_smart_refctd_ptr<nbl::asset::ICPUBuffer>(1024u);
+			auto different_asset = core::make_smart_refctd_ptr<nbl::asset::ICPUBuffer>(1025u);
+			make_asset_asserts(asset, different_asset);
+		}
+		{
+			/*nbl::asset::ICPUAccelerationStructure::SCreationParams params;
+			params.flags = nbl::asset::IAccelerationStructure::E_CREATE_FLAGS::ECF_DEVICE_ADDRESS_CAPTURE_REPLAY_BIT;
+			params.type = nbl::asset::IAccelerationStructure::E_TYPE::ET_TOP_LEVEL;
+			auto asset = core::make_smart_refctd_ptr<nbl::asset::ICPUAccelerationStructure>(params);*/
+
+			//ommited due to NBL_TODO in compatible
+			/*auto different_asset = ...;
+			make_asset_asserts(asset, different_asset);*/
+
+		}
+		{
+			/*auto asset = core::make_smart_refctd_ptr<nbl::asset::ICPUAnimationLibrary>();
+			auto different_asset = core::make_smart_refctd_ptr<nbl::asset::ICPUAnimationLibrary>();
+			make_asset_asserts(asset, different_asset);*/
+		}
+		{
+			auto buffer = core::make_smart_refctd_ptr<nbl::asset::ICPUBuffer>(64);
+			auto asset = core::make_smart_refctd_ptr<nbl::asset::ICPUBufferView>(buffer, nbl::asset::E_FORMAT::EF_S8_UINT);
+			auto buffer2 = core::make_smart_refctd_ptr<nbl::asset::ICPUBuffer>(64);
+			auto different_asset = core::make_smart_refctd_ptr<nbl::asset::ICPUBufferView>(buffer2, nbl::asset::E_FORMAT::EF_D16_UNORM);
+			make_asset_asserts(asset, different_asset);
+		}
+				//test hash
 	}
 
 	void onAppTerminated_impl() override
 	{
-		logger->log("==========Result==========", system::ILogger::ELL_INFO);
+		logger->log("==========Passed==========", system::ILogger::ELL_INFO);
 		//logger->log("Fail Count: %u", system::ILogger::ELL_INFO, totalFailCount);
 	}
 
@@ -56,6 +85,34 @@ public:
 	bool keepRunning() override
 	{
 		return false;
+	}
+
+	void make_asset_asserts(core::smart_refctd_ptr<asset::IAsset> assetA, core::smart_refctd_ptr<asset::IAsset> assetB)
+	{
+		std::cout << assetA->getAssetType() << std::endl;
+		assert(assetA->hash() != assetB->hash());
+		std::unordered_map<asset::IAsset*, size_t> temporary_hash_cache = {};
+		assert(assetA->hash() == assetA->hash(&temporary_hash_cache));
+		assert(temporary_hash_cache.size() >= 1);
+		temporary_hash_cache.insert({assetB.get(), 2137});
+		assert(assetB->hash(&temporary_hash_cache) == 2137);
+
+		assert(!assetA->canBeRestoredFrom(nullptr));
+		assert(assetA->canBeRestoredFrom(assetA.get()));
+		assert(!assetA->canBeRestoredFrom(assetB.get()));
+
+		assert(!assetA->equals(nullptr));
+		assert(assetA->equals(assetA.get()));
+		assert(!assetA->equals(assetB.get()));
+
+		//make sure these do not cause exceptions but discard return values
+		assetA->willBeRestoredFrom(nullptr);
+		assetA->willBeRestoredFrom(assetB.get());
+		assetA->canBeConvertedToDummy();
+		assetA->restoreFromDummy(nullptr);
+		assetA->restoreFromDummy(assetB.get());
+		auto clone = assetA->clone();
+		assetA->convertToDummyObject();
 	}
 
 private:
