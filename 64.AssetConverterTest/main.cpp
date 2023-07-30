@@ -68,7 +68,14 @@ public:
 			auto different_asset = core::make_smart_refctd_ptr<nbl::asset::ICPUBufferView>(buffer2, nbl::asset::E_FORMAT::EF_D16_UNORM);
 			make_asset_asserts(asset, different_asset);
 		}
-				//test hash
+
+
+
+
+
+
+
+
 	}
 
 	void onAppTerminated_impl() override
