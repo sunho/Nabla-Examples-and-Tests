@@ -32,7 +32,7 @@ int main()
 	params.Stencilbuffer = false; //! This will not even be a choice soon
 	params.AuxGLContexts = 16;
 	auto device = createDeviceEx(params);
-
+    
 	if (!device)
 		return 1; // could not create selected driver.
 
@@ -172,7 +172,7 @@ int main()
 		auto scratch = parameters;
 		if (!cuda::CCUDAHandler::defaultHandleResult(cuda::CCUDAHandler::releaseResourcesToGraphics(scratch,resources,resources+resourceCount,stream[0])))
 			return 15;
-
+        
 		float* C_host = new float[numElements];
 		if (!cuda::CCUDAHandler::defaultHandleResult(cuda::CCUDAHandler::cuda.pcuMemcpyDtoHAsync_v2(C_host,C.asBuffer.pointer,_size,stream[0])))
 			return 16;

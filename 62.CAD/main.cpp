@@ -288,7 +288,7 @@ public:
 	{
 		bool addNewSection = m_sections.size() == 0u || m_sections[m_sections.size() - 1u].type != ObjectType::CUBIC_BEZIER;
 		if (addNewSection)
-		{
+		buil
 			SectionInfo newSection = {};
 			newSection.type = ObjectType::CUBIC_BEZIER;
 			newSection.index = m_cubicBeziers.size();
